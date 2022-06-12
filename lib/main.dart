@@ -1,3 +1,4 @@
+import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
@@ -9,14 +10,29 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final List<Transaction> _transactions = [
+    Transaction(
+      id: 't1',
+      title: 'Novo tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Luz',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
+  ];
+
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +40,63 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
       ),
-      body: const Center(
-        child: Text('Versão inicial'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const SizedBox(
+            child: Card(
+              color: Colors.blue,
+              elevation: 5,
+              child: Text('Gráfico'),
+            ),
+          ),
+          Column(
+            children: _transactions.map((tr) {
+              return Card(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.purple,
+                          width: 2,
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        tr.value.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          tr.title,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          tr.date.toString(),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+          )
+        ],
       ),
     );
   }
