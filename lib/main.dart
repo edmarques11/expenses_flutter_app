@@ -1,5 +1,6 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main(List<String> args) {
   return runApp(const ExpensesApp());
@@ -33,6 +34,8 @@ class MyHomePage extends StatelessWidget {
   ];
 
   MyHomePage({Key? key}) : super(key: key);
+  final titleContoller = TextEditingController();
+  final valueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,6 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Despesas Pessoais'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           const SizedBox(
@@ -84,7 +86,7 @@ class MyHomePage extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         Text(
-                          tr.date.toString(),
+                          DateFormat('d MMM y').format(tr.date),
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -95,6 +97,41 @@ class MyHomePage extends StatelessWidget {
                 ),
               );
             }).toList(),
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: titleContoller,
+                    decoration: const InputDecoration(
+                      labelText: 'Título',
+                    ),
+                  ),
+                  TextField(
+                    controller: valueController,
+                    decoration: const InputDecoration(
+                      labelText: 'Valor R\$',
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          print(titleContoller.text);
+                          print(valueController.text);
+                        },
+                        style: TextButton.styleFrom(primary: Colors.purple),
+                        child: const Text('Nova transação'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
           )
         ],
       ),
