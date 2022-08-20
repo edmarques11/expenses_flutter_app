@@ -18,22 +18,7 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ];
-
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
