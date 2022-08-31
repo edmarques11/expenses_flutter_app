@@ -38,7 +38,7 @@ class TransactionForm extends StatelessWidget {
 
                     onSubmit(title, value);
                   },
-                  style: TextButton.styleFrom(primary: Colors.purple),
+                  style: TextButton.styleFrom(foregroundColor: Colors.purple),
                   child: const Text('Nova transação'),
                 ),
               ],
