@@ -1,5 +1,9 @@
-import 'package:expenses/components/transaction_user.dart';
+import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
+import 'package:expenses/components/transaction_list.dart';
+import 'dart:math';
+
+import 'models/transaction.dart';
 
 void main(List<String> args) {
   return runApp(const ExpensesApp());
@@ -16,30 +20,89 @@ class ExpensesApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _transactions = [
+    Transaction(
+      id: 't1',
+      title: 'Novo tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Luz',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
+  ];
+
+  _addTransaction(String title, double value) {
+    final newTransaction = Transaction(
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: DateTime.now(),
+    );
+
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+  }
+
+  openTransactionFormModal(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return TransactionForm(onSubmit: _addTransaction);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () => openTransactionFormModal(context),
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const <Widget>[
-            SizedBox(
+          children: <Widget>[
+            const SizedBox(
               child: Card(
                 color: Colors.blue,
                 elevation: 5,
                 child: Text('Gráfico'),
               ),
             ),
-            TransactionUser(),
+            Column(
+              children: <Widget>[
+                TransactionForm(
+                  onSubmit: _addTransaction,
+                ),
+                TransactionList(transactions: _transactions),
+              ],
+            )
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => openTransactionFormModal(context),
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
